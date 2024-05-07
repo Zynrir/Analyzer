@@ -1,0 +1,31 @@
+# Función para escanear puertos abiertos
+escanear_puertos() {
+    # Pedir dirección IP al usuario
+    echo "Introduce la dirección IP:"
+    read ip_address
+
+    # Pedir nombre de archivo al usuario
+    echo "Introduce el nombre del archivo:"
+    read file_name
+
+    # Comprobar si el archivo ya existe
+    if [[ -e "$file_name" ]]; then
+        echo "El archivo ya existe. Se encuentra en: $(realpath "$file_name")"
+        echo "Contenido del archivo:"
+        cat "$file_name"
+        return 0
+    fi
+
+    # Realizar el escaneo de puertos
+    echo "Escaneando puertos abiertos en la dirección IP $ip_address..."
+
+    # Escaneo de puertos y guardar resultado en el archivo
+    nmap "$ip_address" > "$file_name"
+
+    # Mostrar resultado del escaneo
+    echo "Escaneo completado. Los resultados se han guardado en $file_name:"
+    cat "$file_name"
+}
+
+# Alias para llamar a la función
+alias escanear=escanear_puertos
